@@ -1,11 +1,10 @@
 import React from 'react';
-import HeroSection from "./HeroSection";
-import Albums from "./Albums";
-import Introduction from './Introduction';
+import HeroSection from "../components/HeroSection";
+import AlbumsHome from "../components/AlbumsHome";
+import Introduction from '../components/Introduction';
+import PostsHome from "../components/PostsHome";
 
-
-function Home()
- {
+function Home() {
 
 
 
@@ -17,9 +16,9 @@ function Home()
 
       <Introduction />
 
-      <Albums />
+      <AlbumsHome />
 
-
+      <PostsHome />
 
     </div>
   )
