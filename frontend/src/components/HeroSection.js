@@ -14,7 +14,8 @@ function HeroSection()
         <div className="flex h-full items-center justify-center">
           <div className="px-6 text-center text-white md:px-12">
             <h3 className="mt-6 mb-16 text-3xl font-bold tracking-tight md:text-4xl xl:text-5xl">
-            Immerse yourself in the vibrant colors, intricate details, and thought-provoking concepts that grace your virtual walls via  our Albums
+            Immerse yourself in the vibrant colors, intricate details, that grace your virtual walls via our Albums
+
             </h3>
             <Link to="/Albums" className="mb-2 inline-block rounded-full border-2 border-neutral-50 px-[46px] pt-[14px] pb-[12px] text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 md:mr-2 md:mb-0"
               data-te-ripple-init data-te-ripple-color="light" href="#!" role="button">Albums</Link>
