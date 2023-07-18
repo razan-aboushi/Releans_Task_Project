@@ -1,6 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 function LogIn() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      email === 'razanalqaddoumi@gmail.com' &&
+      password === 'razanalqaddoumi@gmail.com'
+    ) {
+      // Store the user details in local storage
+      const user = {
+        id: 1,
+        username: 'Razan Aboushi',
+        phone_number: '0780577727',
+        email: 'razanalqaddoumi@gmail.com',
+        password: 'razanalqaddoumi@gmail.com',
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Navigate to the profile page
+      navigate('/UserProfile');
+    } else {
+      setError('The email or password are not correct. Please try again.');
+    }
+  };
+
   return (
     <section className="h-screen">
       <div className="container mx-auto h-full px-6 py-24">
@@ -14,7 +51,7 @@ function LogIn() {
           </div>
 
           <div className="md:w-8/12 lg:ml-6">
-            <form className="w-full md:w-auto mt-20">
+            <form className="w-full md:w-auto mt-20" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="email"
@@ -26,6 +63,8 @@ function LogIn() {
                   type="email"
                   name="email"
                   id="email"
+                  value={email}
+                  onChange={handleEmailChange}
                   className="bg-gray-50 border border-gray-300 text-black-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@gmail.com"
                   required
@@ -42,6 +81,8 @@ function LogIn() {
                   type="password"
                   name="password"
                   id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-black-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
@@ -55,7 +96,6 @@ function LogIn() {
                       aria-describedby="remember"
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                      required
                     />
                   </div>
                   <div className="ml-3 text-sm mt-2">
@@ -68,26 +108,21 @@ function LogIn() {
                   </div>
                 </div>
                 <Link
-                  href="#"
+                  to="#"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 mt-2"
                 >
                   Forgot password?
                 </Link>
               </div>
+              {error && (
+                <p className="text-red-500 mt-3">{error}</p>
+              )}
               <button
                 type="submit"
-                className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-5 mb-3" style={{border:"1px solid black"}}
-              >
-                Log In              </button>
-              <p className="text-sm font-light text-black-500 dark:text-black-400">
-                Don’t have an account yet?{' '}
-                <Link
-                  to="/SignUp"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Sign up
-                </Link>
-              </p>
+                className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-5 mb-3"
+                style={{border:"1px solid black"}}    >
+                Log In
+              </button>
             </form>
           </div>
         </div>

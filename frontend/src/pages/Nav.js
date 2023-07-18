@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import logo from "../images/Logo_Project.png";
 
 function Nav() {
   const [showLinks, setShowLinks] = useState(false);
+  const [user, setUser] = useState(null);
 
   const toggleLinks = () => {
     setShowLinks(!showLinks);
   };
 
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
+
   return (
     <header className='shadow'>
       <nav className="bg-white dark:bg-gray-900">
-        <div className="container mx-auto py-4 flex flex-wrap items-center justify-between">
-          <h1 className="ms-5 text-2xl font-bold text-gray-50">RapidTutorials</h1>
-          <div className="hidden lg:flex lg:gap-x-12 items-center space-x-2" style={{columnGap:"24rem"}}>
-            <div className='flex justify-center' style={{columnGap:"2rem"}}>
+        <div className="container mx-auto py-4 flex flex-wrap items-center justify-between p-5">
+          <h1 className="ms-5 text-2xl font-bold text-gray-50"> <Link to="/">
+            <img src={logo} alt="Logo" className="h-15 w-20" />
+          </Link>
+          </h1>
+          <div className="hidden lg:flex lg:gap-x-12 items-center space-x-2" style={{ columnGap: "29rem" }}>
+            <div className='flex justify-center' style={{ columnGap: "2rem" }}>
               <div className="flex items-center space-x-2">
                 <span>
                   <svg
@@ -28,7 +47,13 @@ function Nav() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                      d="M12 14l9-5-9-5-9 5 9 5z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 22V12h6v10m-6 0l6-3"
                     />
                   </svg>
                 </span>
@@ -79,17 +104,28 @@ function Nav() {
                 </Link>
               </div>
             </div>
-            <div className="lg:flex hidden items-center space-x-2 ">
-              <Link to="/LogIn">
-                <button className="text-gray-700 bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded">
-                  Log In
-                </button>
-              </Link>
-              <Link to="/SignUp">
-                <button className="text-gray-700 bg-blue-400 me-4 hover:bg-blue-500 px-4 py-2 rounded">
-                  Sign Up
-                </button>
-              </Link>
+            <div className="lg:flex hidden items-center space-x-2">
+              {user ? (
+                <>
+                  <Link to="/UserProfile">
+                    <button className="text-gray-700 bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded">
+                      Profile
+                    </button>
+                  </Link>
+                  <button
+                    className="text-gray-700 bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </button>
+                </>
+              ) : (
+                <Link to="/LogIn">
+                  <button className="text-gray-700 bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded">
+                    Log In
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
           <div className="lg:hidden">
@@ -139,20 +175,16 @@ function Nav() {
                   to="/Albums"
                   className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded mt-1"
                 >
-                  Gallery
+                  Albums
                 </Link>
-                <Link
-                  to="/LogIn"
-                  className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded mt-1"
-                >
-                  Log In
-                </Link>
-                <Link
-                  to="/SignUp"
-                  className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded mt-1"
-                >
-                  Sign Up
-                </Link>
+                {!user && (
+                  <Link
+                    to="/LogIn"
+                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded mt-1"
+                  >
+                    Log In
+                  </Link>
+                )}
               </div>
             )}
           </div>

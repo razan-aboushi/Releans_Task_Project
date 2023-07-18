@@ -4,7 +4,6 @@ import Nav from "./pages/Nav";
 import Footer from './pages/Footer';
 import Home from './pages/Home';
 import LogIn from './pages/LogIn';
-import SignUp from './pages/SignUp';
 import Posts from './pages/Posts';
 import Albums from './pages/Albums';
 import Photos from './pages/Photos';
@@ -24,7 +23,6 @@ function App()
 
           <Route path="/" element={<Home/>} />
           <Route path="/LogIn" element={<LogIn/>}/>
-          <Route path="/SignUp" element={<SignUp/>} />
           <Route path="/Posts" element={<Posts/>} />
           <Route path="/Albums" element={<Albums/>} />
           <Route path="/Photos/:albumId" element={<Photos/>} />

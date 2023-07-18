@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function Posts() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -6,9 +8,38 @@ function Posts() {
   const [brief, setBrief] = useState('');
   const [content, setContent] = useState('');
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedPosts = localStorage.getItem('posts');
+    if (storedPosts) {
+      setPosts(JSON.parse(storedPosts));
+    }
+
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleFormOpen = () => {
-    setIsFormOpen(true);
+    if (!user) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You must log in to create a post',
+        showCancelButton: true,
+        confirmButtonText: 'Log In',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/LogIn');
+        }
+      });
+    } else {
+      setIsFormOpen(true);
+    }
   };
 
   const handleFormClose = () => {
@@ -30,15 +61,22 @@ function Posts() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Here you can perform the logic to publish the post with the entered details
-    console.log('Publishing post:', { title, brief, content });
+    const newPost = {
+      id: posts.length + 1,
+      title,
+      brief,
+      content,
+      date: new Date().toLocaleDateString(),
+      author: user.username, 
+    };
 
-    // Reset the form fields
+    const updatedPosts = [...posts, newPost];
+    setPosts(updatedPosts);
+    localStorage.setItem('posts', JSON.stringify(updatedPosts));
+
     setTitle('');
     setBrief('');
     setContent('');
-
-    // Close the form
     setIsFormOpen(false);
   };
 
@@ -47,7 +85,8 @@ function Posts() {
       <div
         className="bg-cover bg-center h-screen"
         style={{
-          backgroundImage: 'url("https://leadgenera.lg-cms.com/wp-content/uploads/2022/09/A-Guide-To-Writing-Your-First-Blog-Post-Lead-Genera.png")',
+          backgroundImage:
+            'url("https://leadgenera.lg-cms.com/wp-content/uploads/2022/09/A-Guide-To-Writing-Your-First-Blog-Post-Lead-Genera.png")',
           height: '350px',
         }}
       >
@@ -67,17 +106,14 @@ function Posts() {
               key={post.id}
               className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300"
             >
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-45 object-cover mb-4 rounded-md"
-              />
               <div className="flex justify-between mb-4">
-                <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+              <p className="text-gray-500 text-left mt-2"> {user.author}</p> 
+
+                <h3 className="text-xl text-left font-bold mb-2">{post.title}</h3>
                 <span className="text-gray-500">{post.date}</span>
               </div>
-              <p className="text-gray-600">{post.brief}</p>
-              <button className="text-blue-500 mt-4 hover:text-blue-700">Read More</button>
+              <p className="text-gray-600 text-left">{post.brief}</p>
+              <button className="text-blue-500   mt-4 hover:text-blue-700">Read More</button>
             </div>
           ))}
         </div>
