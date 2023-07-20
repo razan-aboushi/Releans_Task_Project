@@ -1,15 +1,15 @@
 import React from 'react';
 import { Typography } from "@material-tailwind/react";
 import { Link } from 'react-router-dom';
-
 import logo from "../images/Logo_Project.png";
 
-function Footer() 
 
+
+function Footer() 
 {
   return (
     <footer className="bg-white dark:bg-gray-900 w-full p-8 text-white">
-      <div className="dark:bg-gray-900 flex flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 bg-white text-center md:justify-between ">
+      <div className="dark:bg-gray-900 flex flex-col md:flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 bg-white text-center md:justify-between">
         <img src={logo} alt="logo-ct" className="w-20" />
         <ul className="flex flex-wrap items-center text-center gap-y-2 gap-x-8">
           <li>
@@ -51,7 +51,6 @@ function Footer()
               rel="noopener noreferrer"
               className="font-normal transition-colors hover:text-blue-500 focus:text-blue-500">
               Facebook
-
             </Link>
           </li>
           <li>
@@ -78,7 +77,7 @@ function Footer()
       </div>
       <hr className="my-8 border-blue-gray-50" />
       <Typography color="blue-gray" className="text-center font-normal">
-        Copy Rights &copy; 2023 Razan Aboushi
+        Copy Rights &copy; 2023 <Link to="https://github.com/razan-aboushi"> Razan Aboushi </Link>
       </Typography>
     </footer>
   );

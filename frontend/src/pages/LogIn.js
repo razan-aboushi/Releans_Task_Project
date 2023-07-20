@@ -8,7 +8,7 @@ function LogIn()
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -25,7 +25,7 @@ function LogIn()
       password === 'razanalqaddoumi@gmail.com'
     ) {
 
-      // Store the user details in local storage when enter
+      // Store the user details in local storage when enter to the website
       const user = {
         id: 1,
         username: 'Razan Aboushi',
@@ -90,7 +90,7 @@ function LogIn()
                   id="password"
                   value={password}
                   onChange={handlePasswordChange}
-                  placeholder="••••••••"
+                  placeholder="•••••••••••••••••••••••••"
                   className="bg-gray-50 border border-gray-300 text-black-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                 />

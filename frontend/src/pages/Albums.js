@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function Albums() 
-{
+function Albums() {
   const [albums, setAlbums] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,13 +74,14 @@ function Albums()
         <div className="flex justify-center mt-4 m-10">
           <nav className="flex items-center">
             <ul className="flex">
-              {Array.from({ length: Math.ceil(filteredAlbums.length / albumsPerPage) }).map((_, index) => (
+            {Array.from({ length: Math.ceil(filteredAlbums.length / albumsPerPage) }).map((_, index) => (
                 <li key={index} className="px-2">
                   <button
                     onClick={() => paginate(index + 1)}
-                    className={`${
-                      currentPage === index + 1 ? 'text-blue-500' : 'text-gray-500'
-                    } font-medium hover:text-blue-500`}
+                    className={`${currentPage === index + 1
+                        ? 'text-blue-500 bg-blue-100 font-medium hover:text-blue-700'
+                        : 'text-gray-500 hover:text-blue-500'
+                      } px-3 py-2 rounded-md focus:outline-none`}
                   >
                     {index + 1}
                   </button>
