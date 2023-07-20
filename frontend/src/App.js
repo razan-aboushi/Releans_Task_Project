@@ -9,6 +9,7 @@ import Albums from './pages/Albums';
 import Photos from './pages/Photos';
 import UserProfile from './User_Profile/UserProfile';
 import UserPosts from './User_Profile/UserPosts';
+import PostsDetails from "./pages/PostsDetails";
 
 function App() 
 {
@@ -28,6 +29,7 @@ function App()
           <Route path="/Photos/:albumId" element={<Photos/>} />
           <Route path="/UserProfile" element={<UserProfile/>} />
           <Route path="/UserPosts" element={<UserPosts/>} />
+          <Route path="/PostsDetails/:postId" element={<PostsDetails/>} />
 
 
 

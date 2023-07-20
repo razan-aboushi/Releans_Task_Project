@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import "../App.css";
 
 function Posts() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -67,7 +68,7 @@ function Posts() {
       brief,
       content,
       date: new Date().toLocaleDateString(),
-      author: user.username, 
+      author: user.username,
     };
 
     const updatedPosts = [...posts, newPost];
@@ -79,6 +80,13 @@ function Posts() {
     setContent('');
     setIsFormOpen(false);
   };
+
+
+  const handleReadMore = (postId) => {
+    navigate(`/PostsDetails/${postId}`);
+  };
+
+
 
   return (
     <>
@@ -107,13 +115,21 @@ function Posts() {
               className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300"
             >
               <div className="flex justify-between mb-4">
-              <p className="text-gray-500 text-left mt-2"> {user.author}</p> 
-
-                <h3 className="text-xl text-left font-bold mb-2">{post.title}</h3>
+                <p className="text-gray-500 text-left mt-2"> {post.author}</p>
                 <span className="text-gray-500">{post.date}</span>
+
+              </div>
+              <div>
+                <h3 className="text-xl text-left font-bold mb-2">{post.title}</h3>
               </div>
               <p className="text-gray-600 text-left">{post.brief}</p>
-              <button className="text-blue-500   mt-4 hover:text-blue-700">Read More</button>
+              <div className='flex justify-start'>
+                <button className="button text-blue-500 mt-4 hover:text-blue-700"
+
+                  onClick={() => handleReadMore(post.id)}
+
+                >Read More</button>
+              </div>
             </div>
           ))}
         </div>

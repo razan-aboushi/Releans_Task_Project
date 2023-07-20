@@ -33,7 +33,7 @@
    - Open the project in your preferred code editor as VS code.
 
    - Open a terminal and navigate to the project directory :
-   + For frontend " cd frontend ".
+   +  frontend " cd frontend ".
 
    - Install the dependencies in each directory of the project by use "npm install".
 

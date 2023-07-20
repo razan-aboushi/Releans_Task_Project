@@ -32,7 +32,7 @@ function Nav() {
             <img src={logo} alt="Logo" className="h-15 w-20" />
           </Link>
           </h1>
-          <div className="hidden lg:flex lg:gap-x-12 items-center space-x-2" style={{ columnGap: "29rem" }}>
+          <div className="hidden lg:flex lg:gap-x-12 items-center space-x-2" style={{ columnGap: "26rem" }}>
             <div className='flex justify-center' style={{ columnGap: "2rem" }}>
               <div className="flex items-center space-x-2">
                 <span>

@@ -36,3 +36,57 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
+
+
+
+
+  /* Style for buttons */
+  .button {
+    border: none;
+    font-size: 14px;
+    padding: 1em 2em;
+    position: relative;
+    color: #021014;
+    background: #f1f1f1;
+    display: grid;
+    font-weight: 700;
+    place-items: center;
+    transition: color 350ms linear 650ms;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .button:hover {
+    color: #fca311;
+  }
+  
+  .button::before,
+  .button::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 0;
+    height: 6%;
+  }
+  
+  .button::before {
+    background: #fca311;
+    transition: width 350ms, height 350ms linear 650ms;
+  }
+  
+  .button:hover::before {
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+ 
+  
+  
+  

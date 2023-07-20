@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function Comments()
  {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const navigate = useNavigate();
+
+
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setIsLoggedIn(true); 
+    }
+  }, []);
 
   const handleAddComment = () => {
+    if (!isLoggedIn) {
+      showLoginAlert();
+      return;
+    }
+
     const comment = {
       id: new Date().getTime(),
       content: newComment,
       date: new Date().toLocaleString(),
-      username: 'John Doe', 
+      username: 'John Doe',
     };
 
     setComments((prevComments) => [...prevComments, comment]);
@@ -37,23 +56,44 @@ function Comments()
     );
   };
 
+  const showLoginAlert = () => {
+    Swal.fire({
+      title: 'Please log in',
+      text: 'You must log in to add a comment.',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Log In',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/LogIn');
+      }
+    });
+  };
+
   return (
     <div className="p-4 bg-white rounded shadow-lg">
       <h2 className="text-xl font-bold mb-4">Comments</h2>
 
-      <div className="mb-4">
+      <div>
         <textarea
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-1/2 p-2 border border-gray-300 rounded me-3"
           rows="3"
           placeholder="Add a comment..."
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         ></textarea>
         <button
-          className="px-4 py-2 mt-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600"
+          className="px-4 py-2 mt-2 mr-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600"
           onClick={handleAddComment}
         >
           Post Comment
+        </button>
+        <button
+          className="px-4 py-2 mt-2 font-semibold text-white bg-red-500 rounded hover:bg-red-600"
+          onClick={() => setNewComment('')}
+        >
+          Cancel
         </button>
       </div>
 
