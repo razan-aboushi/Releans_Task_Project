@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from "../images/Logo_Project.png";
 
 function Nav() {
   const [showLinks, setShowLinks] = useState(false);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   const toggleLinks = () => {
     setShowLinks(!showLinks);
   };
-
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -18,19 +18,21 @@ function Nav() {
     }
   }, []);
 
+  // Handle user log out of the website
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
+    navigate('/');
   };
-
 
   return (
     <header className='shadow'>
       <nav className="bg-white dark:bg-gray-900">
         <div className="container mx-auto py-4 flex flex-wrap items-center justify-between p-5">
-          <h1 className="ms-5 text-2xl font-bold text-gray-50"> <Link to="/">
-            <img src={logo} alt="Logo" className="h-15 w-20" />
-          </Link>
+          <h1 className="ms-5 text-2xl font-bold text-gray-50">
+            <Link to="/">
+              <img src={logo} alt="Logo" className="h-15 w-20" />
+            </Link>
           </h1>
           <div className="hidden lg:flex lg:gap-x-12 items-center space-x-2" style={{ columnGap: "26rem" }}>
             <div className='flex justify-center' style={{ columnGap: "2rem" }}>
@@ -128,18 +130,17 @@ function Nav() {
               )}
             </div>
           </div>
+
           <div className="lg:hidden">
             <button
               className="text-gray-50 focus:outline-none"
-              onClick={toggleLinks}
-            >
+              onClick={toggleLinks}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 {showLinks ? (
                   <path
                     strokeLinecap="round"
@@ -177,13 +178,27 @@ function Nav() {
                 >
                   Albums
                 </Link>
-                {!user && (
+                {!user ? (
                   <Link
                     to="/LogIn"
                     className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded mt-1"
                   >
                     Log In
                   </Link>
+                ) : (
+                  <>
+                    <Link to="/UserProfile">
+                      <button className="text-gray-700 bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded mt-1 me-1">
+                        Profile
+                      </button>
+                    </Link>
+                    <button
+                      className="text-gray-700 bg-blue-400 hover:bg-blue-500 px-4 py-2 rounded mt-1"
+                      onClick={handleLogout}
+                    >
+                      Log Out
+                    </button>
+                  </>
                 )}
               </div>
             )}

@@ -11,6 +11,7 @@ import UserProfile from './User_Profile/UserProfile';
 import UserPosts from './User_Profile/UserPosts';
 import PostsDetails from "./pages/PostsDetails";
 
+
 function App() 
 {
   return (

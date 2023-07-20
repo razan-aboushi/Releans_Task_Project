@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import "../App.css";
 
-function Posts() {
+function Posts()
+ {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [brief, setBrief] = useState('');
@@ -11,6 +12,7 @@ function Posts() {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const storedPosts = localStorage.getItem('posts');
@@ -24,6 +26,8 @@ function Posts() {
     }
   }, []);
 
+
+  
   const handleFormOpen = () => {
     if (!user) {
       Swal.fire({
@@ -59,22 +63,48 @@ function Posts() {
     setContent(event.target.value);
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
+  
+    // Get the user data from localStorage
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+  
+    // Check if the user is logged in
+    if (!user) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You must log in to create a post',
+        showCancelButton: true,
+        confirmButtonText: 'Log In',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/LogIn');
+        }
+      });
+      return;
+    }
+  
 
+
+    // If the user is logged in, proceed with creating the post
     const newPost = {
       id: posts.length + 1,
       title,
       brief,
       content,
       date: new Date().toLocaleDateString(),
+      user_id: user.id, 
       author: user.username,
     };
-
+  
     const updatedPosts = [...posts, newPost];
     setPosts(updatedPosts);
     localStorage.setItem('posts', JSON.stringify(updatedPosts));
-
+  
     setTitle('');
     setBrief('');
     setContent('');

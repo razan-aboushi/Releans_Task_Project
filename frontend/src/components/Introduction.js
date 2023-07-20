@@ -8,7 +8,7 @@ function Introduction()
         <h3
           role="heading"
           tabIndex="0"
-          className="text-4xl font-bold leading-0 text-black dark:text-black"
+          className="text-3xl font-semibold leading-0 text-black dark:text-black"
         >
           Touching hundreds of lives
         </h3>

@@ -17,8 +17,8 @@ function AlbumsHome() {
   }, []);
 
   return (
-    <div className='mt-10'>
-      <h2 className="text-4xl font-bold mb-4 mt-10">Albums</h2>
+    <div >
+      <h2 className="text-3xl font-semibold mb-4 mt-10">Albums</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-10 p-10">
         {albums.map(album => (
           <Link key={album.id} to={`/Photos/${album.id}`} className="block">

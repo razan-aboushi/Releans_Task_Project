@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function LogIn() {
+function LogIn()
+ {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -15,13 +17,15 @@ function LogIn() {
     setPassword(e.target.value);
   };
 
+  // Handle the log in submit form
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
       email === 'razanalqaddoumi@gmail.com' &&
       password === 'razanalqaddoumi@gmail.com'
     ) {
-      // Store the user details in local storage
+
+      // Store the user details in local storage when enter
       const user = {
         id: 1,
         username: 'Razan Aboushi',
@@ -31,12 +35,15 @@ function LogIn() {
       };
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Navigate to the profile page
+      // Navigate to the user profile 
       navigate('/UserProfile');
+
+      window.location.reload();
     } else {
       setError('The email or password are not correct. Please try again.');
     }
   };
+
 
   return (
     <section className="h-screen">

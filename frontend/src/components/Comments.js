@@ -1,131 +1,275 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  Button,
+  Input,
+} from "@material-tailwind/react";
 
-function Comments()
- {
+function Comments() {
+  // State variables
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [newComment, setNewComment] = useState("");
+  const [updatedComment, setUpdatedComment] = useState("");
+  const [selectedCommentId, setSelectedCommentId] = useState("");
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const navigate = useNavigate();
 
 
-  
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setIsLoggedIn(true); 
-    }
-  }, []);
+  // Get postId from URL parameters
+  const { postId } = useParams();
 
+  // Get user data from local storage
+  const user = JSON.parse(localStorage.getItem("user")) || null;
+
+
+  useEffect(() => {
+    getComments();
+  }, [postId]);
+
+
+
+  // Function to fetch comments from local storage and update the state
+  const getComments = () => {
+    const storedComments = localStorage.getItem("comments");
+    if (storedComments) {
+      setComments(JSON.parse(storedComments));
+    }
+  };
+
+
+
+  // Function to post a new comment
+  const postComment = () => {
+    try {
+      if (!user) {
+        Swal.fire({
+          title: "User Not Registered",
+          text: "Please register or log in to post a comment.",
+          icon: "warning",
+          confirmButtonText: "Log In",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/LogIn");
+          }
+        });
+        return;
+      }
+
+
+      const comment = {
+        content: newComment,
+        user_id: user.id,
+        username: user.username,
+        comment_id: comments.length + 1,
+        post_id: postId,
+        created_at: new Date().toISOString(),
+      };
+
+
+      const newComments = [...comments, comment];
+      setComments(newComments);
+      localStorage.setItem("comments", JSON.stringify(newComments));
+      setNewComment("");
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+
+
+
+  // Function to handle adding a new comment
   const handleAddComment = () => {
-    if (!isLoggedIn) {
-      showLoginAlert();
+    if (newComment.trim() === "") {
       return;
     }
-
-    const comment = {
-      id: new Date().getTime(),
-      content: newComment,
-      date: new Date().toLocaleString(),
-      username: 'John Doe',
-    };
-
-    setComments((prevComments) => [...prevComments, comment]);
-    setNewComment('');
+    postComment();
   };
 
-  const handleUpdateComment = (id, updatedContent) => {
-    setComments((prevComments) =>
-      prevComments.map((comment) => {
-        if (comment.id === id) {
-          return {
-            ...comment,
-            content: updatedContent,
-          };
-        }
-        return comment;
-      })
-    );
-  };
 
-  const handleDeleteComment = (id) => {
-    setComments((prevComments) =>
-      prevComments.filter((comment) => comment.id !== id)
-    );
-  };
 
-  const showLoginAlert = () => {
+  // Function to handle deleting a comment
+  const handleDeleteComment = (commentId) => {
     Swal.fire({
-      title: 'Please log in',
-      text: 'You must log in to add a comment.',
-      icon: 'info',
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Log In',
-      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/LogIn');
+        try {
+          const updatedCommentList = comments.filter(
+            (comment) => comment.comment_id !== commentId
+          );
+          setComments(updatedCommentList);
+          localStorage.setItem("comments", JSON.stringify(updatedCommentList));
+          Swal.fire("Deleted!", "Your comment has been deleted.", "success");
+        } catch (error) {
+          console.error("Error deleting comment:", error);
+        }
       }
     });
   };
 
+
+
+  // Function to handle updating the comment state when editing
+  const handleUpdateComment = (event) => {
+    const value = event.target.value;
+    setUpdatedComment(value);
+  };
+
+
+
+  // Function to handle submitting the edited comment
+  const handleEditForm = (event) => {
+    event.preventDefault();
+    try {
+      const updatedComments = comments.map((comment) => {
+        if (comment.comment_id === selectedCommentId) {
+          return {
+            ...comment,
+            content: updatedComment,
+          };
+        }
+        return comment;
+      });
+
+      setComments(updatedComments);
+      localStorage.setItem("comments", JSON.stringify(updatedComments));
+      setSelectedCommentId("");
+      setUpdatedComment("");
+      setIsPopoverOpen(false);
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
+
+
+  // Function to handle opening the edit popover
+  const handleEditPopover = (commentId) => {
+    setSelectedCommentId(commentId);
+    setIsPopoverOpen(true);
+
+    // Auto fill the comment content when trying to edit it
+    const selectedComment = comments.find(
+      (comment) => comment.comment_id === commentId
+    );
+    if (selectedComment) {
+      setUpdatedComment(selectedComment.content);
+    }
+  };
+
+
+  // Filter the comments related to the current post to just appear them
+  const postComments = comments.filter((comment) => comment.post_id === postId);
+
+
+  
   return (
-    <div className="p-4 bg-white rounded shadow-lg">
-      <h2 className="text-xl font-bold mb-4">Comments</h2>
+    <>
+      <div className="flex flex-col flex-wrap mx-auto lg:max-w-5xl mt-10 mb-8">
+        <div className="flex border-b border-gray-700">
+          <h2 className="my-2 text-sm tracking-widest text-gray-500 title-font">
+            Recent Comments
+          </h2>
+        </div>
+        <div>
+          {postComments.length > 0 &&
+            postComments.map((item) => (
+              <div
+                key={item.comment_id}
+                className="flex content-center py-4 border-b border-gray-700"
+              >
+                <div className="flex w-full px-10 justify-between">
+                  <div className="flex flex-col flex-wrap items-center">
+                    <div className="flex mb-4">
+                      <p className="ms-3 text-left">{item.username}</p>
+                    </div>
+                    <div className="flex flex-col items-start justify-between w-full space-y-2 sm:flex-row">
+                      <p className="text-xs text-gray-500">
+                        {new Date(item.created_at).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="col-span-2 text-left mt-5 mt-5">
+                      <p className="text-md text-left">{item.content}</p>
+                    </div>
+                  </div>
 
-      <div>
-        <textarea
-          className="w-1/2 p-2 border border-gray-300 rounded me-3"
-          rows="3"
-          placeholder="Add a comment..."
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-        ></textarea>
-        <button
-          className="px-4 py-2 mt-2 mr-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600"
-          onClick={handleAddComment}
-        >
-          Post Comment
-        </button>
-        <button
-          className="px-4 py-2 mt-2 font-semibold text-white bg-red-500 rounded hover:bg-red-600"
-          onClick={() => setNewComment('')}
-        >
-          Cancel
-        </button>
-      </div>
-
-      {comments.length > 0 ? (
-        <ul>
-          {comments.map((comment) => (
-            <li key={comment.id} className="mb-4">
-              <p className="text-gray-800">{comment.content}</p>
-              <p className="text-gray-600">
-                By {comment.username} on {comment.date}
-              </p>
-              <div className="flex mt-2">
-                <button
-                  className="mr-2 text-blue-500 hover:text-blue-600"
-                  onClick={() => handleUpdateComment(comment.id, 'Updated Content')}
-                >
-                  Edit
-                </button>
-                <button
-                  className="text-red-500 hover:text-red-600"
-                  onClick={() => handleDeleteComment(comment.id)}
-                >
-                  Delete
-                </button>
+                  <div className="flex flex-col">
+                    {item.user_id === user?.id && (
+                      <>
+                        <Button
+                          className="text-red-500 text-xs hover:text-red-700 ml-2 mb-2 font-semibold bg-transparent"
+                          onClick={() => handleDeleteComment(item.comment_id)}
+                        >
+                          DELETE
+                        </Button>
+                        <div>
+                          <Popover className="bg-gray-500">
+                            <PopoverHandler
+                              onClick={() =>
+                                handleEditPopover(item.comment_id)
+                              }
+                            >
+                              <Button className="bg-transparent text-xs text-gray-500 ml-2">
+                                Edit
+                              </Button>
+                            </PopoverHandler>
+                            <PopoverContent className="border text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-100">
+                              <form
+                                className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+                                onSubmit={handleEditForm}
+                              >
+                                <div className="mb-4 flex flex-col gap-6">
+                                  <Input
+                                    size="lg"
+                                    className="border text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-100"
+                                    value={updatedComment}
+                                    onChange={handleUpdateComment}
+                                  />
+                                </div>
+                                <Button
+                                  className="text-xs lg:text-sm font-medium text-center text-gray-100 rounded-lg bg-cyan-900 focus:ring-4 focus:outline-none hover:bg-cyan-950 focus:ring-cyan-950"
+                                  fullWidth
+                                  type="submit"
+                                >
+                                  Edit
+                                </Button>
+                              </form>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No comments yet.</p>
-      )}
-    </div>
+            ))}
+          <div className="flex items-center mt-4">
+            <textarea
+              className="border text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full pl-10 p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-100"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment"
+            />
+            <button
+              className="ms-5 px-5 py-2.5 text-xs lg:text-sm font-medium text-center text-gray-100 rounded-lg bg-cyan-900 focus:ring-4 focus:outline-none hover:bg-cyan-950 focus:ring-cyan-950"
+              onClick={handleAddComment}
+            >
+              Add Comment
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
