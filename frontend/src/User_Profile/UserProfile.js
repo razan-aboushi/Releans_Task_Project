@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function UserProfile() {
+function UserProfile()
+ {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -12,6 +13,8 @@ function UserProfile() {
     }
   }, []);
 
+
+  
   return (
     <div className="max-w-xs mx-auto m-10">
       <div className="bg-white overflow-hidden shadow-lg rounded-lg border">

@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function AlbumsHome() {
+
+function AlbumsHome() 
+{
   const [albums, setAlbums] = useState([]);
 
+
+
+  // Get the albums from the Fake API
   useEffect(() => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/albums')
+    axios.get('https://jsonplaceholder.typicode.com/albums')
       .then(response => {
         setAlbums(response.data.slice(0, 6));
       })
@@ -16,6 +20,7 @@ function AlbumsHome() {
       });
   }, []);
 
+  
   return (
     <div >
       <h2 className="text-3xl font-semibold mb-4 mt-10">Albums</h2>

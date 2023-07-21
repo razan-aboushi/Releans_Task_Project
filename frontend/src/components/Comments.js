@@ -9,7 +9,9 @@ import {
   Input,
 } from "@material-tailwind/react";
 
-function Comments() {
+
+function Comments() 
+{
   // State variables
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -19,7 +21,7 @@ function Comments() {
   const navigate = useNavigate();
 
 
-  // Get postId from URL parameters
+  // Get postId from URL parameters by usying useParamse()
   const { postId } = useParams();
 
   // Get user data from local storage
@@ -189,10 +191,8 @@ function Comments() {
                 className="flex content-center py-4 border-b border-gray-700"
               >
                 <div className="flex w-full px-10 justify-between">
-                  <div className="flex flex-col flex-wrap items-center">
-                    <div className="flex mb-4">
-                      <p className="ms-3 text-left">{item.username}</p>
-                    </div>
+                  <div className="flex flex-col flex-wrap items-start">
+                      <p className="text-left mb-1">{item.username}</p>
                     <div className="flex flex-col items-start justify-between w-full space-y-2 sm:flex-row">
                       <p className="text-xs text-gray-500">
                         {new Date(item.created_at).toLocaleString()}

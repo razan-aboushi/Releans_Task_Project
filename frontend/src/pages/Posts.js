@@ -27,7 +27,7 @@ function Posts()
   }, []);
 
 
-  
+  // Handle open create post form
   const handleFormOpen = () => {
     if (!user) {
       Swal.fire({
@@ -46,6 +46,7 @@ function Posts()
       setIsFormOpen(true);
     }
   };
+
 
   const handleFormClose = () => {
     setIsFormOpen(false);

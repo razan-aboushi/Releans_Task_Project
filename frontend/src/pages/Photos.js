@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
-function Photos() {
+function Photos() 
+{
     const { albumId } = useParams();
     const [photos, setPhotos] = useState([]);
 

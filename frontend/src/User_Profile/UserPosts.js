@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-function UserPosts() {
+function UserPosts() 
+{
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
 
+  // get the user from the local storage
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -11,6 +13,8 @@ function UserPosts() {
     }
   }, []);
 
+
+// get the post from the local storage
   useEffect(() => {
     const storedPosts = localStorage.getItem('posts');
     if (storedPosts) {
@@ -18,6 +22,7 @@ function UserPosts() {
     }
   }, []);
 
+  // cnvert the date
   function convertDate() {
     const date =  new Date().toLocaleDateString();
     return date;
@@ -32,7 +37,7 @@ function UserPosts() {
       ) : (
         <div className="user-posts m-10 text-left flex flex-wrap gap-4">
           {posts.map((post) => (
-            <div className="post-card w-80 p-4 bg-white rounded-lg shadow-lg hover:translate-y-[-5px] transition-transform duration-300 ease-in-out" key={post.id}>
+            <div className="post-card mt-5 mb-5 w-90 p-4 bg-white rounded-lg shadow-lg hover:translate-y-[-5px] transition-transform duration-300 ease-in-out" key={post.id}>
               <div className="post-header flex items-center mb-2">
                
                 <div>

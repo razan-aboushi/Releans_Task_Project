@@ -31,7 +31,7 @@ function PostsHome()
             <p className="text-gray-600 text-xs mb-1 text-left">{post.author}</p>
             <p className="text-gray-500 text-xs mb-1 text-left">{post.date}</p>
             <h2 className="text-lg font-semibold mb-2 text-left">{post.title}</h2>
-            <p className="text-sm text-gray-700 text-left">{post.content}</p>
+            <p className="text-sm text-gray-700 text-left">{post.brief}</p>
             <button
               className="button text-blue-500 mt-4 hover:text-blue-700"
               onClick={() => handleReadMore(post.id)}

@@ -2,21 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from "../images/Logo_Project.png";
 
-function Nav() {
+function Nav() 
+{
   const [showLinks, setShowLinks] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+// To show or hide links
   const toggleLinks = () => {
     setShowLinks(!showLinks);
   };
 
+
+// Get the user to check if the user found and log in convert the log in into log out and appear profile
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
 
   // Handle user log out of the website
   const handleLogout = () => {
@@ -25,6 +30,7 @@ function Nav() {
     navigate('/');
   };
 
+  
   return (
     <header className='shadow'>
       <nav className="bg-white dark:bg-gray-900">
