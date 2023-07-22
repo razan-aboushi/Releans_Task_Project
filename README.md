@@ -17,7 +17,7 @@
 
 
 ### 💻⚙️ Development Setup :
-## To set up a local development environment for the EduSpark project, follow these steps :-
+## To set up a local development environment for the Harmonize project, follow these steps :-
 
 1. Prerequisites : 
 
