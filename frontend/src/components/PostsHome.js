@@ -8,7 +8,7 @@ function PostsHome()
   // Get the recent posts from local storage or set an empty array if not found
   const recentPosts = JSON.parse(localStorage.getItem('posts')) || [];
 
-  // Limit the recent posts to four
+  // Limit the recent posts to four posts
   const limitedRecentPosts = recentPosts.slice(0, 4);
 
   // Handle the read more button
@@ -28,9 +28,10 @@ function PostsHome()
             key={post.id}
             className="bg-white rounded-md p-4 shadow-md transition-transform transform hover:-translate-y-1 hover:shadow-lg"
           >
-            <p className="text-gray-600 text-xs mb-1 text-left">{post.author}</p>
-            <p className="text-gray-500 text-xs mb-1 text-left">{post.date}</p>
+            
             <h2 className="text-lg font-semibold mb-2 text-left">{post.title}</h2>
+            <p className="text-gray-600 text-xs mb-1 text-left">{post.author}</p>
+            <p className="text-gray-500 text-xs mb-4 text-left">{post.date}</p>
             <p className="text-sm text-gray-700 text-left">{post.brief}</p>
             <button
               className="button text-blue-500 mt-4 hover:text-blue-700"

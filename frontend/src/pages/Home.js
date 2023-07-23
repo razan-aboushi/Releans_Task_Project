@@ -4,8 +4,8 @@ import AlbumsHome from "../components/AlbumsHome";
 import Introduction from '../components/Introduction';
 import PostsHome from "../components/PostsHome";
 
-function Home() {
-
+function Home()
+ {
 
 
 
